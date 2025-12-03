@@ -9,7 +9,7 @@ my_dict = {
         'Sex': 'male'
     },
     'set': {None, 'text', 39, 15, 'last'}
-    }
+}
 
 print(my_dict['tuple'][-1])
 
