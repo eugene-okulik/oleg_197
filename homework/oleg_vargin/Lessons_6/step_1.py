@@ -5,9 +5,9 @@ result = []
 
 for word in words:
     if word.endswith(','):
-        new_word = word[:-1] + 'ing'
+        new_word = word[:-1] + 'ing' + ','
     elif word.endswith('.'):
-        new_word = word[:-1] + 'ing'
+        new_word = word[:-1] + 'ing' + '.'
     else:
         new_word = word + 'ing'
     result.append(new_word)
