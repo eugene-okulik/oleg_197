@@ -98,7 +98,7 @@ for f in fresh_flowers:
 print()
 
 stem_length = bouquet.find_flowers_by_stem_length_range(40, 55)
-print(f'Цветы с подходящей длиной стебля:')
+print('Цветы с подходящей длиной стебля:')
 for f in stem_length:
     print(f)
 print()
