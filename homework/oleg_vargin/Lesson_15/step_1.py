@@ -19,19 +19,15 @@ student_id = cursor.lastrowid
 print(f'Студент добавлен с ID: {student_id}')
 print()
 
-
 # Добавляем книги
-def add_book(title: str, student_id: int, cursor):
-    cursor.execute(
-        'INSERT INTO books (title, taken_by_student_id) VALUES (%s, %s)',
-        (title, student_id)
-    )
-    print(f'Книга {title} добавлена и закреплена за студентом с ID: {student_id}')
-
-
-add_book('Sketchbook_1', student_id, cursor)
-add_book('Sketchbook_2', student_id, cursor)
-print()
+books_data = [
+    ('Sketchbook_1', student_id),
+    ('Sketchbook_2', student_id)
+]
+cursor.executemany(
+    'INSERT INTO books (title, taken_by_student_id) VALUES (%s, %s)',
+    books_data
+)
 
 # Создаем группу
 cursor.execute(
@@ -84,17 +80,17 @@ print()
 
 
 # Добавляем оценки
-def add_mark(value: int, lesson_id: int, student_id: int, cursor):
-    cursor.execute(
-        'INSERT INTO marks (value, lesson_id, student_id) VALUES (%s, %s, %s)',
-        (value, lesson_id, student_id)
-    )
+marks_data = [
+    (4, lesson_id_1, student_id),
+    (3, lesson_id_2, student_id),
+    (3, lesson_id_3, student_id),
+    (5, lesson_id_4, student_id)
+]
 
-
-add_mark(3, lesson_id_1, student_id, cursor)
-add_mark(4, lesson_id_2, student_id, cursor)
-add_mark(3, lesson_id_3, student_id, cursor)
-add_mark(5, lesson_id_4, student_id, cursor)
+cursor.executemany(
+    'INSERT INTO marks (value, lesson_id, student_id) VALUES (%s, %s, %s)',
+    marks_data
+)
 
 db.commit()
 
