@@ -19,15 +19,19 @@ student_id = cursor.lastrowid
 print(f'Студент добавлен с ID: {student_id}')
 print()
 
+
 # Добавляем книги
-cursor.execute(
-    'INSERT INTO books (title, taken_by_student_id) VALUES (%s, %s)',
-    ('Sketchbook_1', student_id)
-)
-cursor.execute(
-    'INSERT INTO books (title, taken_by_student_id) VALUES (%s, %s)',
-    ('Sketchbook_2', student_id)
-)
+def add_book(title: str, student_id: int, cursor):
+    cursor.execute(
+        'INSERT INTO books (title, taken_by_student_id) VALUES (%s, %s)',
+        (title, student_id)
+    )
+    print(f'Книга {title} добавлена и закреплена за студентом с ID: {student_id}')
+
+
+add_book('Sketchbook_1', student_id, cursor)
+add_book('Sketchbook_2', student_id, cursor)
+print()
 
 # Создаем группу
 cursor.execute(
@@ -44,68 +48,53 @@ cursor.execute(
     (group_id, student_id)
 )
 
-# Создаем предметы
-cursor.execute(
-    'INSERT INTO subjects (title) VALUES (%s)',
-    ('Geography',)
-)
-subject_id_1 = cursor.lastrowid
-print(f'Предмет Geography добавлен с ID: {subject_id_1}')
 
-cursor.execute('INSERT INTO subjects (title) VALUES (%s)',
-               ('World History',)
-               )
-subject_id_2 = cursor.lastrowid
-print(f'Предмет World History добавлен с ID: {subject_id_2}')
+# Создаем предметы
+def add_subject(title: str, cursor):
+    cursor.execute(
+        'INSERT INTO subjects (title) VALUES (%s)',
+        (title,)
+    )
+    subject_id = cursor.lastrowid
+    print(f'Предмет {title} добавлен с ID: {subject_id}')
+    return subject_id
+
+
+subject_id_1 = add_subject('Geography', cursor)
+subject_id_2 = add_subject('World History', cursor)
 print()
+
 
 # Создаем уроки
-cursor.execute(
-    'INSERT INTO lessons (title, subject_id) VALUES (%s, %s)',
-    ('Geography lesson 1', subject_id_1)
-)
-lesson_id_1 = cursor.lastrowid
-print(f'Урок Geography lesson 1 добавлен с ID: {lesson_id_1}')
+def add_lesson(title: str, subject_id: int, cursor):
+    cursor.execute(
+        'INSERT INTO lessons (title, subject_id) VALUES (%s, %s)',
+        (title, subject_id)
+    )
+    lesson_id = cursor.lastrowid
+    print(f'{title} добавлен с ID: {lesson_id}')
+    return lesson_id
 
-cursor.execute(
-    'INSERT INTO lessons (title, subject_id) VALUES (%s, %s)',
-    ('Geography lesson 2', subject_id_1)
-)
-lesson_id_2 = cursor.lastrowid
-print(f'Урок Geography lesson 2 добавлен с ID: {lesson_id_2}')
 
-cursor.execute(
-    'INSERT INTO lessons (title, subject_id) VALUES (%s, %s)',
-    ("World History lesson 1", subject_id_2)
-)
-lesson_id_3 = cursor.lastrowid
-print(f'Урок World History lesson 1 добавлен с ID: {lesson_id_3}')
-
-cursor.execute(
-    'INSERT INTO lessons (title, subject_id) VALUES (%s, %s)',
-    ("World History lesson 2", subject_id_2)
-)
-lesson_id_4 = cursor.lastrowid
-print(f'Урок World History lesson 2 добавлен с ID: {lesson_id_4}')
+lesson_id_1 = add_lesson('Geography lesson 1', subject_id_1, cursor)
+lesson_id_2 = add_lesson('Geography lesson 2', subject_id_1, cursor)
+lesson_id_3 = add_lesson('World History lesson 1', subject_id_2, cursor)
+lesson_id_4 = add_lesson('World History lesson 2', subject_id_2, cursor)
 print()
 
+
 # Добавляем оценки
-cursor.execute(
-    'INSERT INTO marks (value, lesson_id, student_id) VALUES (%s, %s, %s)',
-    (4, lesson_id_1, student_id)
-)
-cursor.execute(
-    'INSERT INTO marks (value, lesson_id, student_id) VALUES (%s, %s, %s)',
-    (3, lesson_id_2, student_id)
-)
-cursor.execute(
-    'INSERT INTO marks (value, lesson_id, student_id) VALUES (%s, %s, %s)',
-    (3, lesson_id_3, student_id)
-)
-cursor.execute(
-    'INSERT INTO marks (value, lesson_id, student_id) VALUES (%s, %s, %s)',
-    (5, lesson_id_4, student_id)
-)
+def add_mark(value: int, lesson_id: int, student_id: int, cursor):
+    cursor.execute(
+        'INSERT INTO marks (value, lesson_id, student_id) VALUES (%s, %s, %s)',
+        (value, lesson_id, student_id)
+    )
+
+
+add_mark(3, lesson_id_1, student_id, cursor)
+add_mark(4, lesson_id_2, student_id, cursor)
+add_mark(3, lesson_id_3, student_id, cursor)
+add_mark(5, lesson_id_4, student_id, cursor)
 
 db.commit()
 
@@ -136,16 +125,16 @@ for row in books:
     print(f'Книга: {row["title"]}')
 print()
 
-print('Полная информация о студенте и всех запиясях в БД')
+print('Полная информация о студенте и всех записях в БД')
 cursor.execute('''
-               SELECT students.id          AS student_id,
-                      students.name        AS student_name,
-                      students.second_name AS student_second_name,
-                      groups.title         AS group_title,
-                      books.title          AS book_title,
-                      marks.value          AS mark,
-                      lessons.title        AS lesson_title,
-                      subjects.title       AS subject_title
+               SELECT students.id    AS student_id,
+                      students.name,
+                      students.second_name,
+                      groups.title   AS group_title,
+                      books.title    AS book_title,
+                      marks.value    AS mark,
+                      lessons.title  AS lesson_title,
+                      subjects.title AS subject_title
                FROM students
                         JOIN `groups` ON students.group_id = `groups`.id
                         JOIN books ON students.id = books.taken_by_student_id
