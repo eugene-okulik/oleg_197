@@ -121,6 +121,7 @@ def test_patch(post_and_delete):
     assert response.status_code == 200
     print(f'Частично обновили на: {response.text}')
 
+
 @pytest.mark.medium
 def test_put(post_and_delete):
     update_body = {
