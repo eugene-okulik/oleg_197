@@ -38,12 +38,14 @@ def test_post(name):
 
     delete(obj_id)
 
+
 @allure.title("Получение объекта по ID")
 @pytest.mark.medium
 def test_get_by_id(post_and_delete):
     get_by_id_url = f'{base_url}object/{post_and_delete}'
     response = requests.get(get_by_id_url)
     assert response.status_code == 200
+
 
 @allure.title("Частичное обновление объекта (PATCH)")
 @pytest.mark.critical
@@ -75,6 +77,7 @@ def test_patch(post_and_delete):
     assert response.status_code == 200
     print(f'Частично обновили на: {response.text}')
 
+
 @allure.title("Полное обновление объекта (PUT)")
 @pytest.mark.medium
 def test_put(post_and_delete):
@@ -90,6 +93,7 @@ def test_put(post_and_delete):
     response = requests.put(put_url, json=update_body)
     assert response.status_code == 200
     print(f'Обновили на: {response.text}')
+
 
 @allure.title("Проверка удаления объекта")
 @pytest.mark.medium
