@@ -1,7 +1,10 @@
+import allure
 import random
 import requests
 import faker
 import pytest
+
+from api_helpers import post, delete
 
 fake = faker.Faker()
 
@@ -10,56 +13,7 @@ base_url = 'http://objapi.course.qa-practice.com/'
 size = ['XS', 'S', 'M', 'L', 'XL', 'AVERAGE', 'UNBELIEVABLE']
 
 
-def post():
-    body = {
-        'name': fake.name(),
-        'data': {
-            'color': fake.color_name(),
-            'size': random.choice(size)
-        }
-    }
-    post_url = base_url + 'object'
-    response = requests.post(post_url, json=body)
-    assert response.status_code == 200
-    print(f'Объект создан: {response.text}')
-    post_id = response.json()['id']
-    return post_id
-
-
-def delete(post_id):
-    delete_url = f'{base_url}object/{post_id}'
-    response = requests.delete(delete_url)
-    if response.status_code == 200:
-        print(f'Объект {post_id} удален')
-    else:
-        print(f'Warning: не удалось удалить объект {post_id}')
-
-
-@pytest.fixture(scope='session', autouse=True)
-def session_setup_teardown():
-    print('\nStart testing')
-    yield
-    print('\nTesting completed')
-
-
-@pytest.fixture(autouse=True)
-def function_setup_teardown():
-    print('\nbefore test')
-    yield
-    print('after test')
-
-
-@pytest.fixture()
-def post_and_delete():
-    post_id = None
-    try:
-        post_id = post()
-        yield post_id
-    finally:
-        if post_id:
-            delete(post_id)
-
-
+@allure.title("Создание объекта: {name}")
 @pytest.mark.critical
 @pytest.mark.parametrize('name', [
     'test_1',
@@ -85,6 +39,7 @@ def test_post(name):
     delete(obj_id)
 
 
+@allure.title("Получение объекта по ID")
 @pytest.mark.medium
 def test_get_by_id(post_and_delete):
     get_by_id_url = f'{base_url}object/{post_and_delete}'
@@ -92,6 +47,7 @@ def test_get_by_id(post_and_delete):
     assert response.status_code == 200
 
 
+@allure.title("Частичное обновление объекта (PATCH)")
 @pytest.mark.critical
 def test_patch(post_and_delete):
     update_name = random.choice([True, False])
@@ -122,6 +78,7 @@ def test_patch(post_and_delete):
     print(f'Частично обновили на: {response.text}')
 
 
+@allure.title("Полное обновление объекта (PUT)")
 @pytest.mark.medium
 def test_put(post_and_delete):
     update_body = {
@@ -138,6 +95,7 @@ def test_put(post_and_delete):
     print(f'Обновили на: {response.text}')
 
 
+@allure.title("Проверка удаления объекта")
 @pytest.mark.medium
 def test_check_delete():
     post_id = post()
