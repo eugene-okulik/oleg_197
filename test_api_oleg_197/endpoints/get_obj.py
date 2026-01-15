@@ -10,7 +10,6 @@ class GetObj:
         response.raise_for_status()
         return response.json()
 
-
     def assert_deleted(self, post_id):
         url = Endpoints.OBJECT_URL_TEMPLATE.format(post_id)
         response = requests.get(url)
