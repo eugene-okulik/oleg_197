@@ -15,6 +15,13 @@ fake = faker.Faker()
 size = ['XS', 'S', 'M', 'L', 'XL', 'AVERAGE', 'UNBELIEVABLE']
 
 
+def assert_object_updated(response_obj, expected_name=None, expected_data=None):
+    if expected_name is not None:
+        assert response_obj['name'] == expected_name, f'Ожидалось имя "{expected_name}", получено "{response_obj["name"]}"'
+    if expected_data is not None:
+        assert response_obj['data'] == expected_data, f'Ожидалось имя "{expected_name}", получено "{response_obj["name"]}"'
+
+
 @allure.title('Создание объекта: {name}')
 @pytest.mark.critical
 @pytest.mark.parametrize('name', ['test_1', 'test_2', 'test_3'])
@@ -59,10 +66,7 @@ def test_patch(post_and_delete, patcher, getter):
 
     updated = patcher.patch(post_and_delete, name=new_name, data=new_data)
 
-    if new_name:
-        assert updated['name'] == new_name
-    if new_data:
-        assert updated['data'] == new_data
+    assert_object_updated(updated, expected_name=new_name, expected_data=new_data)
 
 
 @allure.title('Полное обновление объекта (PUT)')
@@ -76,8 +80,7 @@ def test_put(post_and_delete, putter):
 
     updated = putter.put(post_and_delete, name=new_name, data=new_data)
 
-    assert updated['name'] == new_name
-    assert updated['data'] == new_data
+    assert_object_updated(updated, expected_name=new_name, expected_data=new_data)
 
 
 @allure.title("Проверка удаления объекта")
