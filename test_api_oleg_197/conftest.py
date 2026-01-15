@@ -1,7 +1,10 @@
 import pytest
 
-from endpoints.create_post import CreatePost
-from endpoints.delete_post import DeletePost
+from test_api_oleg_197.endpoints.create_obj import CreateObj
+from test_api_oleg_197.endpoints.delete_obj import DeleteObj
+from test_api_oleg_197.endpoints.get_obj import GetObj
+from test_api_oleg_197.endpoints.put_obj import PutObj
+from test_api_oleg_197.endpoints.patch_obj import PatchObj
 
 
 @pytest.fixture(scope='session', autouse=True)
@@ -20,8 +23,8 @@ def function_setup_teardown():
 
 @pytest.fixture()
 def post_and_delete():
-    create = CreatePost()
-    delete = DeletePost()
+    create = CreateObj()
+    delete = DeleteObj()
     post_id = None
     try:
         post_id = create.create()
@@ -29,3 +32,35 @@ def post_and_delete():
     finally:
         if post_id:
             delete.delete(post_id)
+
+
+@pytest.fixture
+def creator():
+    return CreateObj()
+
+
+@pytest.fixture
+def deleter():
+    return DeleteObj()
+
+
+@pytest.fixture
+def getter():
+    return GetObj()
+
+
+@pytest.fixture
+def putter():
+    return PutObj()
+
+
+@pytest.fixture
+def patcher():
+    return PatchObj()
+
+
+@pytest.fixture()
+def created_obj():
+    creator = CreateObj()
+    post_id = creator.create()
+    yield post_id

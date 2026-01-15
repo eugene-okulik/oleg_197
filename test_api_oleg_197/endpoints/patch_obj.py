@@ -3,7 +3,7 @@ import requests
 from test_api_oleg_197.endpoints.endpoints import Endpoints
 
 
-class PatchPost:
+class PatchObj:
     def patch(self, post_id, name=None, data=None):
         url = Endpoints.OBJECT_URL_TEMPLATE.format(post_id)
         body = {}
@@ -13,7 +13,7 @@ class PatchPost:
             body["data"] = data
 
         if not body:
-            raise ValueError("At least one of 'name' or 'data' must be provided for PATCH")
+            raise ValueError('Для PATCH-запроса необходимо указать хотя бы одно из полей: "name" или "data"')
 
         response = requests.patch(url, json=body)
         response.raise_for_status()
