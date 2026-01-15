@@ -17,9 +17,11 @@ size = ['XS', 'S', 'M', 'L', 'XL', 'AVERAGE', 'UNBELIEVABLE']
 
 def assert_object_updated(response_obj, expected_name=None, expected_data=None):
     if expected_name is not None:
-        assert response_obj['name'] == expected_name, f'Ожидалось имя "{expected_name}", получено "{response_obj["name"]}"'
+        assert response_obj['name'] == expected_name, \
+            f'Ожидалось имя "{expected_name}", получено "{response_obj["name"]}"'
     if expected_data is not None:
-        assert response_obj['data'] == expected_data, f'Ожидалось имя "{expected_name}", получено "{response_obj["name"]}"'
+        assert response_obj['data'] == expected_data, \
+            f'Ожидалось имя "{expected_name}", получено "{response_obj["name"]}"'
 
 
 @allure.title('Создание объекта: {name}')
