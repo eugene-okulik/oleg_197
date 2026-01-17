@@ -13,14 +13,14 @@ size = ['XS', 'S', 'M', 'L', 'XL', 'AVERAGE', 'UNBELIEVABLE']
 @pytest.mark.parametrize('name', ['test_1', 'test_2', 'test_3'])
 def test_post(name, creator, deleter, getter):
     post_id = creator.create_with_name(name=name)
-    getter.assert_name(post_id, name)
+    getter.assert_object_fields(post_id, name=name)
     deleter.delete(post_id)
 
 
 @allure.title("Получение объекта по ID")
 @pytest.mark.medium
 def test_get_by_id(post_and_delete, getter):
-    getter.assert_id(post_and_delete)
+    getter.assert_object_fields(post_and_delete, id=post_and_delete)
 
 
 @allure.title('Частичное обновление объекта (PATCH)')
@@ -46,7 +46,7 @@ def test_patch(post_and_delete, patcher, getter):
         if update_size:
             new_data['size'] = random.choice(size)
 
-    patcher.assert_patch(
+    patcher.assert_update(
         post_and_delete,
         name=new_name,
         data=new_data,
@@ -63,7 +63,13 @@ def test_put(post_and_delete, putter):
         'color': fake.color_name(),
         'size': random.choice(size)
     }
-    putter.assert_put(post_and_delete, new_name, new_data)
+    putter.assert_update(
+        post_and_delete,
+        name=new_name,
+        data=new_data,
+        expected_name=new_name,
+        expected_data=new_data
+    )
 
 
 @allure.title("Проверка удаления объекта")
@@ -71,4 +77,4 @@ def test_put(post_and_delete, putter):
 def test_check_delete(created_obj, deleter, getter):
     post_id = created_obj
     deleter.delete(post_id)
-    getter.assert_deleted(post_id)
+    getter.assert_code(post_id, 404)
