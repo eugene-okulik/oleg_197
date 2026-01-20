@@ -3,7 +3,6 @@ import random
 import faker
 import pytest
 
-
 fake = faker.Faker()
 size = ['XS', 'S', 'M', 'L', 'XL', 'AVERAGE', 'UNBELIEVABLE']
 
@@ -46,10 +45,8 @@ def test_patch(post_and_delete, patcher, getter):
         if update_size:
             new_data['size'] = random.choice(size)
 
-    patcher.assert_update(
-        post_and_delete,
-        name=new_name,
-        data=new_data,
+    patcher.patch(post_and_delete, name=new_name, data=new_data)
+    patcher.assert_patch(
         expected_name=new_name,
         expected_data=new_data
     )
@@ -63,13 +60,8 @@ def test_put(post_and_delete, putter):
         'color': fake.color_name(),
         'size': random.choice(size)
     }
-    putter.assert_update(
-        post_and_delete,
-        name=new_name,
-        data=new_data,
-        expected_name=new_name,
-        expected_data=new_data
-    )
+    putter.put(post_and_delete, name=new_name, data=new_data)
+    putter.assert_put(new_name, new_data)
 
 
 @allure.title("Проверка удаления объекта")

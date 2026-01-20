@@ -1,21 +1,33 @@
+import allure
 import requests
 
-from test_api_oleg_197.endpoints.base_obj import BaseObj
-from test_api_oleg_197.endpoints.endpoints import Endpoints
+from test_api_oleg_197.endpoints.endpoints import BaseAsserts
 
 
-class PatchObj(BaseObj):
-    def _make_request(self, post_id, name=None, data=None):
-        url = Endpoints.OBJECT_URL_TEMPLATE.format(post_id)
+class PatchObj():
+    url = 'http://objapi.course.qa-practice.com/object/{}'
+
+    def __init__(self):
+        self.response = None
+
+    @allure.step('Частичное обновление объекта (PATCH)')
+    def patch(self, post_id, name, data):
+        url = self.url.format(post_id)
         body = {}
         if name is not None:
             body["name"] = name
         if data is not None:
             body["data"] = data
-
         if not body:
             raise ValueError('Для PATCH-запроса необходимо указать хотя бы одно из полей: "name" или "data"')
 
-        response = requests.patch(url, json=body)
-        assert response.status_code == 200, f'Ожидался статус 200, получен: {response.status_code}'
-        return response.json()
+        self.response = requests.patch(url, json=body)
+        BaseAsserts.assert_status_code(self.response)
+        return self.response.json()
+
+    @allure.step('Проверяем частичное обновление объекта (PATCH)')
+    def assert_patch(self, expected_name=None, expected_data=None):
+        if expected_name is not None:
+            BaseAsserts.assert_fields(self.response.json(), name=expected_name)
+        if expected_data is not None:
+            BaseAsserts.assert_fields(self.response.json(), data=expected_data)

@@ -1,16 +1,26 @@
+import allure
 import requests
 
-from test_api_oleg_197.endpoints.base_obj import BaseObj
-from test_api_oleg_197.endpoints.endpoints import Endpoints
+from test_api_oleg_197.endpoints.endpoints import BaseAsserts
 
 
-class PutObj(BaseObj):
-    def _make_request(self, post_id, name=None, data=None):
-        url = Endpoints.OBJECT_URL_TEMPLATE.format(post_id)
+class PutObj():
+    url = 'http://objapi.course.qa-practice.com/object/{}'
+
+    def __init__(self):
+        self.response = None
+
+    @allure.step('Полное обновление объекта (PUT)')
+    def put(self, post_id, name=None, data=None):
+        url = self.url.format(post_id)
         body = {
             "name": name,
             "data": data
         }
-        response = requests.put(url, json=body)
-        assert response.status_code == 200, f'Ожидался статус 200, получен: {response.status_code}'
-        return response.json()
+        self.response = requests.put(url, json=body)
+        BaseAsserts.assert_status_code(self.response)
+        return self.response
+
+    @allure.step('Проверяем полное обновление объекта (PUT)')
+    def assert_put(self, name, data):
+        BaseAsserts.assert_fields(self.response.json(), name=name, data=data)
