@@ -34,7 +34,7 @@ def test_patch(post_and_delete, patcher, getter):
     if not (update_name or update_color or update_size):
         update_name = True
 
-    new_name = fake.name() if update_name else None
+    new_name = fake.name() if update_name else original.get('name')
     new_data = None
 
     if update_color or update_size:

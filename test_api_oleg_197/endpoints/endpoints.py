@@ -1,19 +1,20 @@
-class BaseAsserts:
-    @staticmethod
-    def assert_fields(obj, **expected_fields):
+class BaseApi:
+
+    def __init__(self):
+        self.response = None
+
+    def assert_fields(self, **expected_fields):
         for field, expected_value in expected_fields.items():
-            actual_value = obj.get(field)
+            actual_value = self.response.json().get(field)
             assert actual_value == expected_value, \
                 f'Поле {field}: ожидалось {expected_value}, получено {actual_value}'
 
-    @staticmethod
-    def assert_status_code(response, expected_status=200):
-        assert response.status_code == expected_status, \
-            f'Ожидался статус {expected_status}, получен: {response.status_code}'
+    def assert_status_code(self, expected_status=200):
+        assert self.response.status_code == expected_status, \
+            f'Ожидался статус {expected_status}, получен: {self.response.status_code}'
 
-    @staticmethod
-    def assert_update(response, expected_name=None, expected_data=None):
+    def assert_update(self, expected_name=None, expected_data=None):
         if expected_name is not None:
-            assert response['name'] == expected_name, f'Имя: {response["name"]} != {expected_name}'
+            assert self.response['name'] == expected_name, f'Имя: {self.response["name"]} != {expected_name}'
         if expected_data is not None:
-            assert response['data'] == expected_data, f'Данные: {response["data"]} != {expected_data}'
+            assert self.response['data'] == expected_data, f'Данные: {self.response["data"]} != {expected_data}'

@@ -3,16 +3,13 @@ import requests
 import faker
 import random
 
-from test_api_oleg_197.endpoints.endpoints import BaseAsserts
+from test_api_oleg_197.endpoints.endpoints import BaseApi
 
 
-class CreateObj():
+class CreateObj(BaseApi):
     fake = faker.Faker()
     sizes = ['XS', 'S', 'M', 'L', 'XL', 'AVERAGE', 'UNBELIEVABLE']
     url = 'http://objapi.course.qa-practice.com/object'
-
-    def __init__(self):
-        self.response = None
 
     @allure.step('Создаём объект')
     def create(self):
@@ -24,7 +21,7 @@ class CreateObj():
             }
         }
         self.response = requests.post(self.url, json=body)
-        BaseAsserts.assert_status_code(self.response)
+        self.assert_status_code()
         with allure.step(f'Объект создан: {self.response.text}'):
             pass
         return self.response.json()['id']
@@ -39,7 +36,7 @@ class CreateObj():
             }
         }
         self.response = requests.post(self.url, json=body)
-        BaseAsserts.assert_status_code(self.response)
+        self.assert_status_code()
         with allure.step(f'Объект создан с именем "{name}": {self.response.text}'):
             pass
         return self.response.json()['id']
