@@ -1,4 +1,12 @@
+import faker
+import random
+import requests
+import allure
+
+
 class BaseApi:
+    fake = faker.Faker()
+    sizes = ['XS', 'S', 'M', 'L', 'XL', 'AVERAGE', 'UNBELIEVABLE']
 
     def __init__(self):
         self.response = None
@@ -18,3 +26,28 @@ class BaseApi:
             assert self.response['name'] == expected_name, f'Имя: {self.response["name"]} != {expected_name}'
         if expected_data is not None:
             assert self.response['data'] == expected_data, f'Данные: {self.response["data"]} != {expected_data}'
+
+    def create_base(self, name=None):
+        generate_name = self.fake.name()
+
+        if name is None:
+            name = generate_name
+
+        body = {
+            'name': name,
+            'data': {
+                'color': self.fake.color_name(),
+                'size': random.choice(self.sizes)
+            }
+        }
+        self.response = requests.post(self.url, json=body)
+        self.assert_status_code()
+
+        if name == generate_name:
+            with allure.step(f'Объект создан: {self.response.text}'):
+                pass
+        else:
+            with allure.step(f'Объект создан с именем "{name}": {self.response.text}'):
+                pass
+
+        return self.response.json()['id']
