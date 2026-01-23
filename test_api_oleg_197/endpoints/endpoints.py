@@ -1,6 +1,7 @@
 import faker
 import random
 
+
 class BaseApi:
     fake = faker.Faker()
     sizes = ['XS', 'S', 'M', 'L', 'XL', 'AVERAGE', 'UNBELIEVABLE']
