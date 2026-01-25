@@ -6,7 +6,7 @@ class MemeUser(HttpUser):
     token = None
 
     def on_start(self):
-        response = self.client.post(
+        response = self.client.create(
             '/authorize',
             json={'name': 'Eugeny'}
         )
