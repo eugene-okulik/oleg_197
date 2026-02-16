@@ -26,13 +26,8 @@ def test_form(driver):
     input_field.send_keys(input_text)
     input_field.send_keys(Keys.ENTER)
 
-    wait.until(
-        ec.text_to_be_present_in_element
-            (
-            (By.XPATH, '//p[@id="result-text"]'),
-            input_text
-        )
-    )
+    wait.until(ec.text_to_be_present_in_element(
+        (By.XPATH, '//p[@id="result-text"]'), input_text))
 
     result_element = driver.find_element(By.XPATH, '//p[@id="result-text"]')
 
