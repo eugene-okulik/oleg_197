@@ -1,0 +1,8 @@
+SHOP_CART = 'a[href="/shop/cart"].o_navlink_background'
+CUSTOMIZABLE_DESK = 'a[content="Customizable Desk"]'
+CART_BTN_FOR_CUSTOMIZABLE_DESK = '[value="12"] + [role="button"]'
+CONTINUE_SHOPPING_BTN = '.btn-secondary'
+TOAST_HEADER = '.toast-header'
+CATEGORIES_BTN = '#top_menu > li > a'
+DESKS_BTN = '#top_menu > li > ul > li:nth-child(1) > a'
+OFFICE_DESIGN_SOFTWARE = 'a[content="Office Design Software"]'

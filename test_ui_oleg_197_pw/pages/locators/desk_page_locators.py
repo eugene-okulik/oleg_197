@@ -1,0 +1,5 @@
+PRODUCT_CARD = '.oe_product'
+NAME_PRODUCT_CARD = '.text-primary'
+PRODUCT_CONTAINER = '#products_grid'
+SORT_BY_BTN = '.o_sortby_dropdown [role="button"]'
+SORT_BY_NAME = '.dropdown-item[href="/shop?order=name\\+asc&category=1"]'

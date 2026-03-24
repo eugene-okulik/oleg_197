@@ -1,0 +1,7 @@
+PRODUCT_PRICE = '[data-oe-expression="product_price"] .oe_currency_value'
+TOTAL_UNTAXED = '.pb-2 .oe_currency_value'
+TOTAL_TAXES = '.pb-3 .oe_currency_value'
+ORDER_TOTAL = '.pt-3 .oe_currency_value'
+CHECKOUT_BTN = 'a[href="/shop/checkout?express=1"]'
+REMOVE_BTN = 'a[title="Remove from cart"]'
+EMPTY_CART = 'js_cart_lines'
