@@ -3,7 +3,8 @@ import pytest
 from test_ui_oleg_197_pw.pages.base_page import BasePage
 from test_ui_oleg_197_pw.pages.cart_page import CartPage
 from test_ui_oleg_197_pw.pages.desk_page import DeskPage
-from test_ui_oleg_197_pw.pages.locators.main_page_locators import CUSTOMIZABLE_DESK, CART_BTN_FOR_CUSTOMIZABLE_DESK, TOAST_HEADER, \
+from test_ui_oleg_197_pw.pages.locators.main_page_locators import CUSTOMIZABLE_DESK, CART_BTN_FOR_CUSTOMIZABLE_DESK, \
+    TOAST_HEADER, \
     OFFICE_DESIGN_SOFTWARE
 from test_ui_oleg_197_pw.pages.shipping_page_locators import ShippingPage
 from test_ui_oleg_197_pw.pages.locators.shop_cart_locators import EMPTY_CART

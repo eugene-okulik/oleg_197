@@ -1,5 +1,4 @@
 import allure
-from playwright.sync_api import expect
 
 from test_ui_oleg_197_pw.pages.base_page import BasePage
 from test_ui_oleg_197_pw.pages.locators.main_page_locators import CONTINUE_SHOPPING_BTN

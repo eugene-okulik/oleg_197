@@ -3,7 +3,8 @@ import re
 import allure
 
 from test_ui_oleg_197_pw.pages.base_page import BasePage
-from test_ui_oleg_197_pw.pages.locators.desk_page_locators import PRODUCT_CONTAINER, PRODUCT_CARD, SORT_BY_BTN, SORT_BY_NAME
+from test_ui_oleg_197_pw.pages.locators.desk_page_locators import PRODUCT_CONTAINER, PRODUCT_CARD, SORT_BY_BTN, \
+    SORT_BY_NAME
 from test_ui_oleg_197_pw.pages.locators.main_page_locators import CATEGORIES_BTN, DESKS_BTN
 
 
