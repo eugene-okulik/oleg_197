@@ -1,0 +1,21 @@
+Задание 1:
+1.  Go to first line in file: g (<  ESC-< )
+2.  Go to last line in file: G (>  ESC-> )
+3.  Forward one window: f (^F  ^V  SPACE)
+4.  Forward one line: e (^E  j  ^N  CR)
+5.  Backward one line: y (^Y  k  ^K  ^P)
+6.  Search forward for matching line: /pattern
+7.  Search backward for matching line: ?pattern
+8.  Repeat previous search: n
+9.  Repeat previous search in reverse direction: N
+
+Задание 2:
+1.  /dev/null      - character special file
+2.  /dev/zero      - character special file
+3.  /dev/sda       - cannot stat '/dev/sda': No such file or directory
+4.  /dev/tty       - character special file
+5.  /root          - directory
+6.  /etc/passwd    - regular file
+7.  /proc/mounts   - symbolic link
+8.  /bin/ls        - regular file
+9.  /bin/zcat      - regular file
